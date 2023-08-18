@@ -46,8 +46,6 @@ if ($Q_dvpg_check){
     
 #rename the target VM
 
-$date = Get-Date
-
 Write-Host "Renaming $target_vm to QUARANTINE_$target_vm..."
 $target_vm = Get-VM $target_vm | Set-VM -Name "QUARANTINE_$target_vm" -Confirm:$false
 
