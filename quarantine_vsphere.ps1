@@ -66,4 +66,8 @@ foreach($nic in $target_networking){
 #Suspend the VM
 
 Write-Host "Beginning VM suspension of $target_vm..."
-Get-VM $target_vm | Suspend-VM
+Get-VM $target_vm | Suspend-VM -Confirm:$false
+
+
+#Closing statement
+Write-Host "VM $target_vm quarantined succesfully!"
