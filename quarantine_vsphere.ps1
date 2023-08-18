@@ -12,7 +12,7 @@ $target_vm = Read-Host "Enter VM name to be quarantined"
 
 # logic to validate legit VM was entered
 
-$check_target = Get-VM $target_vm
+$check_target = Get-VM $target_vm -ErrorAction SilentlyContinue
 if ($check_target) {
     Write-Host 'VM located' 
 } else {
