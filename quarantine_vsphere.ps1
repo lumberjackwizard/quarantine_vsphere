@@ -14,9 +14,9 @@ $target_vm = Read-Host "Enter VM name to be quarantined"
 
 $target_vm = Get-VM $target_vm -ErrorAction SilentlyContinue
 if ($target_vm) {
-    Write-Host 'VM located' 
+    Write-Host 'VM located...' 
 } else {
-    Write-Host 'No matching VM found'
+    Write-Host 'No matching VM found. Exiting...'
     exit
 } 
 
@@ -48,7 +48,7 @@ if ($Q_dvpg_check){
 
 $date = Get-Date
 
-Write-Host "Renaming $target_vm to Quarantine_$target_vm..."
+Write-Host "Renaming $target_vm to QUARANTINE_$target_vm..."
 $target_vm = Get-VM $target_vm | Set-VM -Name "QUARANTINE_$target_vm" -Confirm:$false
 
 #move all VM NICs to the Quarantine dvpg
@@ -66,7 +66,7 @@ foreach($nic in $target_networking){
 #Suspend the VM
 
 Write-Host "Beginning VM suspension of $target_vm..."
-Get-VM $target_vm | Suspend-VM -Confirm:$false
+Get-VM $target_vm | Suspend-VM -Confirm:$false | Out-Null
 
 
 #Closing statement
