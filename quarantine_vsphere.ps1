@@ -6,7 +6,7 @@ $vcenter = Read-Host "Enter vCenter FQDN or IP"
 #Get vCenter credentials
 $Cred = Get-Credential -Title "$vcenter Credentials" -Message 'Enter vCenter administrator Username and Password'
 
-Connect-VIServer -Server $vcenter -Credential $Cred
+Connect-VIServer -Server $vcenter -Credential $Cred | Out-Null
 
 $target_vm = Read-Host "Enter VM name to be quarantined"
 
@@ -40,7 +40,7 @@ if ($Q_dvpg_check){
     $Qtine_dvpg = $vm_vds | New-VDPortgroup -Name "Quarantine" 
     $Qtine_dvpg_teaming = Get-vdswitch $vm_vds | Get-VDPortgroup $Qtine_dvpg | Get-VDUplinkTeamingPolicy
     $Qtine_uplinks = $Qtine_dvpg_teaming.ActiveUplinkPort + $Qtine_dvpg_teaming.StandbyUplinkPort
-    $move_Qtine_uplinks = Get-vdswitch $vm_vds | Get-VDPortgroup $Qtine_dvpg | Get-VDUplinkTeamingPolicy | Set-VDUplinkTeamingPolicy -UnusedUplinkPort $Qtine_uplinks                             
+    Get-vdswitch $vm_vds | Get-VDPortgroup $Qtine_dvpg | Get-VDUplinkTeamingPolicy | Set-VDUplinkTeamingPolicy -UnusedUplinkPort $Qtine_uplinks | Out-Null                          
 
 }
     
