@@ -61,3 +61,9 @@ $target_networking = Get-NetworkAdapter -VM $target_vm
 foreach($nic in $target_networking){
     Set-NetworkAdapter -NetworkAdapter $nic -Portgroup $Qtine_dvpg -Confirm:$false | Out-Null
 }
+
+
+#Suspend the VM
+
+Write-Host "Beginning VM suspension of $target_vm..."
+Get-VM $target_vm | Suspend-VM
