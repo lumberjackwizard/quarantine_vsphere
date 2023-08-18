@@ -44,9 +44,20 @@ if ($Q_dvpg_check){
 
 }
     
-#rename the target VM and add 'Quaratined' annotation
+#rename the target VM
 
 $date = Get-Date
 
+Write-Host "Renaming $target_vm to Quarantine_$target_vm..."
 $target_vm = Get-VM $target_vm | Set-VM -Name "QUARANTINE_$target_vm" -Confirm:$false
-Set-Annotation -Entity $target_vm -CustomAttribute "Quarantined" -Value $date | Out-Null
+
+#move all VM NICs to the Quarantine dvpg
+
+Write-Host "Moving $target_vm vNics to Quarantine Distributed Port Group..."
+$Qtine_dvpg = Get-VDPortgroup -VDSwitch $vm_vds -Name Quarantine
+
+$target_networking = Get-NetworkAdapter -VM $target_vm
+
+foreach($nic in $target_networking){
+    Set-NetworkAdapter -NetworkAdapter $nic -Portgroup $Qtine_dvpg -Confirm:$false | Out-Null
+}
