@@ -17,6 +17,7 @@ if ($check_target) {
     Write-Host 'VM located' 
 } else {
     Write-Host 'No VM found'
+    exit
 } 
 
 #Check VDS where target VM resides for 'Quarantine' dvpg. Create it if one does not exist. 
@@ -37,7 +38,7 @@ if ($Q_dvpg_check){
     $Qtine_dvpg = $vm_vds | New-VDPortgroup -Name "Quarantine" 
     $Qtine_dvpg_teaming = Get-vdswitch $vm_vds | Get-VDPortgroup $Qtine_dvpg | Get-VDUplinkTeamingPolicy
     $Qtine_uplinks = $Qtine_dvpg_teaming.ActiveUplinkPort + $Qtine_dvpg_teaming.StandbyUplinkPort
-    Get-vdswitch $vm_vds | Get-VDPortgroup $Qtine_dvpg | Get-VDUplinkTeamingPolicy | Set-VDUplinkTeamingPolicy -UnusedUplinkPort $Qtine_uplinks                             
+    $move_Qtine_uplinks = Get-vdswitch $vm_vds | Get-VDPortgroup $Qtine_dvpg | Get-VDUplinkTeamingPolicy | Set-VDUplinkTeamingPolicy -UnusedUplinkPort $Qtine_uplinks                             
 
 }
     
