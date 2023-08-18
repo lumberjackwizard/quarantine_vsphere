@@ -16,7 +16,7 @@ $check_target = Get-VM $target_vm
 if ($check_target) {
     Write-Host 'VM located' 
 } else {
-    Write-Host 'No VM found'
+    Write-Host 'No matching VM found'
     exit
 } 
 
@@ -30,11 +30,13 @@ $Q_dvpg_check = 1
 foreach ($vdpg in $vdpgs){                
     if ($vdpg.Name -eq 'Quarantine'){ 
         $Q_dvpg_check = 0
+        Write-Host "Quarantine Distributed Port Group located"
         break
     }
 }
 
 if ($Q_dvpg_check){
+    Write-Host "Quarantine Distributed Port Group does not exist. Creating Quarantine Port Group."
     $Qtine_dvpg = $vm_vds | New-VDPortgroup -Name "Quarantine" 
     $Qtine_dvpg_teaming = Get-vdswitch $vm_vds | Get-VDPortgroup $Qtine_dvpg | Get-VDUplinkTeamingPolicy
     $Qtine_uplinks = $Qtine_dvpg_teaming.ActiveUplinkPort + $Qtine_dvpg_teaming.StandbyUplinkPort
