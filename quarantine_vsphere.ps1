@@ -44,6 +44,9 @@ if ($Q_dvpg_check){
 
 }
     
-#rename the target VM
+#rename the target VM and add 'Quaratined' annotation
 
-$renamed_target = Get-VM $target_vm | Set-VM -Name "QUARANTINE_$target_vm"  
+$date = Get-Date
+
+$target_vm = Get-VM $target_vm | Set-VM -Name "QUARANTINE_$target_vm" -Confirm:$false
+Set-Annotation -Entity $target_vm -CustomAttribute "Quarantined" -Value $date | Out-Null
