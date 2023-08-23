@@ -74,7 +74,7 @@ $target_cluster = Get-VM $target_vm | Get-Cluster
 
 if ($target_cluster.DrsEnabled -eq "True"){
     Write-Host "Checking if QUARANTINE_RESOURCE_POOL already exists..."
-    $qtine_pool = Get-ResourcePool -Name QUARANTINE_RESOURCE_POOL -ErrorAction SilentlyContinue
+    $qtine_pool = Get-ResourcePool -Name QUARANTINE_RESOURCE_POOL -Location $target_cluster -ErrorAction SilentlyContinue
     if ($qtine_pool){
         Write-Host "QUARANTINE_RESOURCE_POOL already exists. Moving $target_vm to this resource pool..."
         Move-VM -VM $target_vm -Destination $qtine_pool
