@@ -67,5 +67,17 @@ Write-Host "Beginning VM suspension of $target_vm..."
 Get-VM $target_vm | Suspend-VM -Confirm:$false | Out-Null
 
 
+#Create Quaratine Resource Pool for suspended VM
+#This will prevent the VM from being removed from suspension until it's removed from this Resource Pool
+
+$target_cluster = Get-VM $target_vm | Get-Cluster
+
+if ($target_cluster.DrsEnabled -eq "True"){
+    $qtine_pool = New-ResourcePool -Location $target_cluster -MemReservationGB 0 -MemExpandableReservation $false - Name QUARANTINE_RESOURCE_POOL
+    Move-VM $target_vm -Destination $qtine_pool
+
+}
+
+
 #Closing statement
 Write-Host "VM $target_vm quarantined succesfully!"
