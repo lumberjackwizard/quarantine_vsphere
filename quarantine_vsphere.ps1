@@ -69,6 +69,7 @@ Get-VM $target_vm | Suspend-VM -Confirm:$false | Out-Null
 
 #Create Quaratine Resource Pool for suspended VM
 #This will prevent the VM from being removed from suspension until it's removed from this Resource Pool
+#If DRS is not enabled on the VM's cluster, this section will be skipped.
 
 $target_cluster = Get-VM $target_vm | Get-Cluster
 
