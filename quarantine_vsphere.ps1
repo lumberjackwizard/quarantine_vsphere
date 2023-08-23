@@ -73,12 +73,16 @@ Get-VM $target_vm | Suspend-VM -Confirm:$false | Out-Null
 $target_cluster = Get-VM $target_vm | Get-Cluster
 
 if ($target_cluster.DrsEnabled -eq "True"){
+    Write-Host "Checking if QUARANTINE_RESOURCE_POOL already exists..."
     $qtine_pool = Get-ResourcePool -Name QUARANTINE_RESOURCE_POOL -ErrorAction SilentlyContinue
     if ($qtine_pool){
+        Write-Host "QUARANTINE_RESOURCE_POOL already exists. Moving $target_vm to this resource pool..."
         Move-VM -VM $target_vm -Destination $qtine_pool
     } else {
-    $qtine_pool = New-ResourcePool -Location $target_cluster -MemReservationGB 0 -MemExpandableReservation $false -Name QUARANTINE_RESOURCE_POOL
-    Move-VM -VM $target_vm -Destination $qtine_pool
+        Write-Host "QUARANTINE_RESOURCE_POOL does not exist. Creating..."
+        $qtine_pool = New-ResourcePool -Location $target_cluster -MemReservationGB 0 -MemExpandableReservation $false -Name QUARANTINE_RESOURCE_POOL
+        Write-Host "Moving $target_vm to QUARANTINE_RESOURCE_POOL..."
+        Move-VM -VM $target_vm -Destination $qtine_pool
     }
 
 }
