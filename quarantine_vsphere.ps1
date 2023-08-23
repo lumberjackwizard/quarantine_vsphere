@@ -82,7 +82,7 @@ if ($target_cluster.DrsEnabled -eq "True"){
         Write-Host "QUARANTINE_RESOURCE_POOL does not exist. Creating..."
         $qtine_pool = New-ResourcePool -Location $target_cluster -MemReservationGB 0 -MemExpandableReservation $false -Name QUARANTINE_RESOURCE_POOL
         Write-Host "Moving $target_vm to QUARANTINE_RESOURCE_POOL..."
-        Move-VM -VM $target_vm -Destination $qtine_pool
+        Move-VM -VM $target_vm -Destination $qtine_pool | Out-Null
     }
 
 }
