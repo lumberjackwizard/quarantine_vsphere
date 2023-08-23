@@ -30,7 +30,7 @@ $Q_dvpg_check = 1
 foreach ($vdpg in $vdpgs){                
     if ($vdpg.Name -eq 'Quarantine'){ 
         $Q_dvpg_check = 0
-        Write-Host "Quarantine Distributed Port Group located"
+        Write-Host "Quarantine Distributed Port Group located..."
         break
     }
 }
@@ -77,7 +77,7 @@ if ($target_cluster.DrsEnabled -eq "True"){
     $qtine_pool = Get-ResourcePool -Name QUARANTINE_RESOURCE_POOL -Location $target_cluster -ErrorAction SilentlyContinue
     if ($qtine_pool){
         Write-Host "QUARANTINE_RESOURCE_POOL already exists. Moving $target_vm to this resource pool..."
-        Move-VM -VM $target_vm -Destination $qtine_pool
+        Move-VM -VM $target_vm -Destination $qtine_pool | Out-Null
     } else {
         Write-Host "QUARANTINE_RESOURCE_POOL does not exist. Creating..."
         $qtine_pool = New-ResourcePool -Location $target_cluster -MemReservationGB 0 -MemExpandableReservation $false -Name QUARANTINE_RESOURCE_POOL
@@ -89,4 +89,4 @@ if ($target_cluster.DrsEnabled -eq "True"){
 
 
 #Closing statement
-Write-Host "VM $target_vm quarantined succesfully!"
+Write-Host "$target_vm quarantined succesfully!"
