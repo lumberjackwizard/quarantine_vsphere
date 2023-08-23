@@ -73,8 +73,8 @@ Get-VM $target_vm | Suspend-VM -Confirm:$false | Out-Null
 $target_cluster = Get-VM $target_vm | Get-Cluster
 
 if ($target_cluster.DrsEnabled -eq "True"){
-    $qtine_pool = New-ResourcePool -Location $target_cluster -MemReservationGB 0 -MemExpandableReservation $false - Name QUARANTINE_RESOURCE_POOL
-    Move-VM $target_vm -Destination $qtine_pool
+    $qtine_pool = New-ResourcePool -Location $target_cluster -MemReservationGB 0 -MemExpandableReservation $false -Name QUARANTINE_RESOURCE_POOL
+    Move-VM -VM $target_vm -Destination $qtine_pool
 
 }
 
